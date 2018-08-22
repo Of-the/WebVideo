@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+        <mapper namespace="com.zhiyou100.dao.AdminDao">
+	<resultMap type="com.zhiyou100.model.Admin" id="adminMap">
+		<id column="admin_id" property="adminId"/>
+		<result column="admin_name" property="adminName"/>
+		<result column="admin_password" property="adminPassword"/>
+		<result column="admin_remark" property="adminRemark"/>
+	</resultMap>
+	<insert id="add" parameterType="admin">
+		insert into admin values(#{adminId},#{adminName},#{adminPassword},#{adminRemark}
+	</insert>
+	<delete id="delete">
+		delete from admin where admin_id=#{adminId}
+	</delete>
+	<update id="update" parameterType="admin">
+		update admin 
+		<set>
+			<if test="admin_name!=null">,admin_name=#{adminName}</if>
+			<if test="admin_password!=null">,admin_password=#{adminPassword}</if>
+			<if test="admin_remark!=null">,admin_remark=#{adminRemark}</if>
+		</set>
+		where admin_id=#{adminId}
+	</update>
+	
+	<select id="selectOne" resultMap="adminMap">
+		select * from admin where admin_name=#{adminName}
+	</select>
+
+	<select id="login" resultMap="adminMap">
+	select * from admin where admin_name=#{name} and admin_password=#{password}
+	</select>
+	
+	
+</mapper>

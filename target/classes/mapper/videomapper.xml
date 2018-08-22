@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.zhiyou100.dao.VideoDao">
+	<resultMap type="com.zhiyou100.model.Video" id="videoMap">
+		<id column="video_id" property="videoId" />
+		<result column="video_title" property="videoTitle" />
+		<result column="video_desc" property="videoDesc" />
+		<result column="video_time" property="videoTime" />
+		<result column="speaker_id" property="speakerId" />
+		<result column="course_id" property="courseId" />
+		<result column="video_url" property="videoUrl" />
+		<result column="video_img_url" property="videoImgUrl" />
+		<result column="video_play_num" property="videoPlayNum" />
+
+	</resultMap>
+	
+
+        
+	<select id="select" resultMap="videoMap">
+		select * from video
+	</select>
+	<select id="selectOne" resultMap="videoMap">
+		select * from video where video_id=#{videoId}
+	</select>
+	
+	<insert id="add" parameterType="video">
+		insert into video
+		values(#{videoId},#{videoTitle},#{videoDesc},#{videoTime},#{speakerId},#{courseId},#{videoUrl},#{videoImgUrl},#{videoPlayNum})
+	</insert>
+
+	<delete id="delete">
+		delete from video where video_id=#{videoId}
+	</delete>
+
+	<delete id="deleteAll" parameterType="integer[]">
+		delete from video where video_id in
+		<foreach collection="ids" item="i" open="(" separator=","
+			close=")">
+			#{i}
+		</foreach>
+	</delete>
+	
+	
+	<select id="selectSome" resultMap="videoMap">
+		select * from video
+		<where>
+			<if test="speakerId !=null and speakerId !='' ">
+				speaker_id =#{speakerId} 
+			</if>
+			<if test="courseId !=null and courseId !='' ">
+				 and course_id =#{courseId} 
+			</if>
+			<if test="videoTitle !=null and videoTitle !='' ">
+				and video_title like  CONCAT(CONCAT('%',#{videoTitle},'%'))
+			</if>
+		</where>
+	</select>
+
+
+
+</mapper>
